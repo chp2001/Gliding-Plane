@@ -42,25 +42,49 @@ func _physics_process(delta):
 	
 
 	# horizontal counterforce against flying direction
-	# to slow the plane down
+	# to slow the plane down horizontally
+	# vertically gravity will do that
 	velocity.x*= (1 - horizontal_drag * delta)
 
 	
-	# how much of the velocity is in forward direction
-	# flying in the same direction we are looking means all
-	# forward_velocity= velocity.length()
+	# how much of the velocity is going in the forward 
+	# direction 
+	# flying in the same direction we are 
+	# looking in means all velocity is forward velocity
+	# so forward_velocity= velocity.length()
+	#
 	# falling straight down while looking to the right
-	# means forward_velocity= 0
+	# means none of the velocity is forward velocity
+	# so forward_velocity= 0
+	#
+	# this will help to determine the impact our wings
+	# will have. If there isnt any forward velocity there
+	# will be no effect from the wings and the plane
+	# should handle like a rocket
+	# But with a high forward velocity our wings will
+	# have a huge impact and the plane will handle more
+	# arcade-like
 	var forward_velocity: float= forward.dot(velocity)
 
-	# lerp between current velocity and "full-velocity-forward" vectors
-	# ("full-velocity-forward" means all the velocity follows the planes
-	# pitch as if there was no gravity and no "sliding")
-	#
-	# use the forward_velocity and the upliftfactor to determine
-	# how much the plane follows the previous velocity vs how much
-	# it translates the velocity in the current direction
-	velocity= lerp(velocity, velocity.length() * forward, clamp(forward_velocity * 0.01 * uplift_factor, 0, 1))
+	# this is the velocity we would use if our plane
+	# should handle like rocket, basically just like
+	# a default physics object
+	var rocket_velocity: Vector2= velocity
+
+	# i call this arcade velocity because its unrealistic
+	# it means all the velocity is going in direction of our
+	# plane. So if you turn it, it will go instantly in that
+	# direction 
+	var arcade_velocity: Vector2= velocity.length() * forward
+	
+	# use the forward_velocity and the uplift factor to determine
+	# the interpolation between rocket physics and arcade physics
+	# for low speeds (and/or low uplift) we want the plane to handle
+	# more like a rocket
+	# for higher speeds (and/or high uplift) we want the plane to
+	# handle arcade like and fly exactly in the direction we are
+	# pointing
+	velocity= lerp(rocket_velocity, arcade_velocity, clamp(forward_velocity * 0.01 * uplift_factor, 0, 1))
 	
 	# add gravity
 	velocity+= Vector2.DOWN * gravity * delta
