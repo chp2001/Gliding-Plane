@@ -1,39 +1,50 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjewmwjlwrfbp"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_sfw5h"]
-[ext_resource type="Texture2D" uid="uid://2t3yps6pi61s" path="res://plane.png" id="2_x2np0"]
-[ext_resource type="Script" path="res://plane.gd" id="3_lofek"]
-[ext_resource type="Texture2D" uid="uid://6xy08ti33kvc" path="res://thrust.png" id="4_104lq"]
+[ext_resource type="PackedScene" uid="uid://7prmx6ruwsgu" path="res://plane.tscn" id="2_ex5uy"]
 [ext_resource type="Texture2D" uid="uid://dhfmydfgq4gd4" path="res://background tile.png" id="4_nffjb"]
+
+[sub_resource type="Gradient" id="Gradient_a7qgq"]
+colors = PackedColorArray(0.125843, 5.77569e-07, 0.6466, 1, 0, 0.963124, 0.899476, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o8yhs"]
+gradient = SubResource("Gradient_a7qgq")
+width = 2048
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_sfw5h")
 
-[node name="Plane" type="Sprite2D" parent="."]
-position = Vector2(526, 337)
-texture = ExtResource("2_x2np0")
-script = ExtResource("3_lofek")
-gravity = 50.0
-horizontal_drag = 0.2
-uplift_factor = 0.01
+[node name="Plane" parent="." instance=ExtResource("2_ex5uy")]
 
-[node name="Thruster" type="Sprite2D" parent="Plane"]
-visible = false
-position = Vector2(-30, 1)
-scale = Vector2(0.34, 0.34)
-texture = ExtResource("4_104lq")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer BG" type="CanvasLayer" parent="."]
 layer = -1
+scale = Vector2(10, 10)
+transform = Transform2D(10, 0, 0, 10, 0, 0)
+
+[node name="Atmosphere" type="TextureRect" parent="CanvasLayer BG"]
+offset_left = 1024.0
+offset_top = -1024.0
+offset_right = 3072.0
+offset_bottom = 1024.0
+rotation = 1.5708
+texture = SubResource("GradientTexture1D_o8yhs")
+
+[node name="CanvasLayer Grid" type="CanvasLayer" parent="."]
+layer = -1
+scale = Vector2(10, 10)
+transform = Transform2D(10, 0, 0, 10, 0, 0)
 follow_viewport_enabled = true
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-offset_left = -10000.0
-offset_top = -10000.0
-offset_right = 10000.0
-offset_bottom = 10000.0
+[node name="Grid BG" type="TextureRect" parent="CanvasLayer Grid"]
+visible = false
+modulate = Color(1, 1, 1, 0.321569)
+offset_left = -10058.0
+offset_top = -10110.0
+offset_right = 9942.0
+offset_bottom = 9890.0
+scale = Vector2(10, 10)
 texture = ExtResource("4_nffjb")
 stretch_mode = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.075, 1.075)
+zoom = Vector2(0.36, 0.36)

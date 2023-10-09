@@ -1,0 +1,128 @@
+[gd_scene load_steps=11 format=3 uid="uid://wtuk6gh782nk"]
+
+[ext_resource type="Script" path="res://plane_sprite_generator.gd" id="1_msvm8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mf1f6"]
+albedo_color = Color(0.345098, 0.345098, 0.345098, 1)
+metallic = 1.0
+roughness = 0.56
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y7rfr"]
+albedo_color = Color(0.678431, 0.678431, 0.678431, 1)
+metallic = 1.0
+roughness = 0.46
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x25oo"]
+material = SubResource("StandardMaterial3D_y7rfr")
+top_radius = 0.14
+bottom_radius = 0.27
+height = 1.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_adi3j"]
+albedo_color = Color(0.054902, 0.054902, 0.054902, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vn64t"]
+material = SubResource("StandardMaterial3D_adi3j")
+top_radius = 0.14
+bottom_radius = 0.27
+height = 0.29
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86mcx"]
+albedo_color = Color(0.333333, 1, 1, 1)
+roughness = 0.25
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_luwn7"]
+material = SubResource("StandardMaterial3D_86mcx")
+radius = 0.34
+height = 1.405
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4wgio"]
+transparency = 1
+albedo_color = Color(0.894118, 0.270588, 0.427451, 0.368627)
+
+[sub_resource type="Environment" id="Environment_ttdmf"]
+background_mode = 1
+background_color = Color(0.807843, 0.807843, 0.807843, 1)
+
+[node name="Plane Sprite Generator" type="Node3D"]
+script = ExtResource("1_msvm8")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.48481, 0.87462, 0, 0.87462, 0.48481, -1, 2.11917e-08, -3.82308e-08, 12, 6.67, -0.475)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)
+
+[node name="Plane" type="Node3D" parent="."]
+
+[node name="Body" type="CSGCylinder3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+height = 5.0
+sides = 32
+material = SubResource("StandardMaterial3D_mf1f6")
+
+[node name="Front" type="CSGCylinder3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -3.36803)
+height = 1.76
+sides = 32
+cone = true
+material = SubResource("StandardMaterial3D_mf1f6")
+
+[node name="Right Wing Engine" type="MeshInstance3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 1.24354, -0.352493, 1.01863)
+mesh = SubResource("CylinderMesh_x25oo")
+skeleton = NodePath("../Right Wing")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Plane/Right Wing Engine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.60997, -2.98023e-08)
+mesh = SubResource("CylinderMesh_vn64t")
+skeleton = NodePath("../../Right Wing")
+
+[node name="Left Wing Engine" type="MeshInstance3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.244, -0.352, 1.019)
+mesh = SubResource("CylinderMesh_x25oo")
+skeleton = NodePath("../Right Wing")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Plane/Left Wing Engine"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.60997, -2.98023e-08)
+mesh = SubResource("CylinderMesh_vn64t")
+skeleton = NodePath("../../Right Wing")
+
+[node name="Right Wing" type="CSGBox3D" parent="Plane"]
+transform = Transform3D(0.684662, 0, -0.728861, 0, 1, 0, 0.728861, 0, 0.684662, 1.03257, 0, 0.729095)
+size = Vector3(3.11, 0.117, 1)
+material = SubResource("StandardMaterial3D_mf1f6")
+
+[node name="Wing Connector" type="CSGBox3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.39303)
+size = Vector3(3.11, 0.117, 1)
+material = SubResource("StandardMaterial3D_mf1f6")
+
+[node name="Left Wing" type="CSGBox3D" parent="Plane"]
+transform = Transform3D(0.684547, 0, 0.728969, 0, 1, 0, -0.728969, 0, 0.684547, -1.033, 0, 0.729)
+size = Vector3(3.11, 0.117, 1)
+material = SubResource("StandardMaterial3D_mf1f6")
+
+[node name="Main Engine" type="CSGCylinder3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 2.1954)
+height = 1.32
+sides = 32
+cone = true
+material = SubResource("StandardMaterial3D_adi3j")
+
+[node name="Cockpit" type="MeshInstance3D" parent="Plane"]
+transform = Transform3D(1, 0, 0, 0, -0.104476, 0.994527, 0, -0.994527, -0.104476, 0, 0.120356, -2.50929)
+mesh = SubResource("CapsuleMesh_luwn7")
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.57)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Marker3D"]
+radius = 10.302
+radial_segments = 64
+rings = 32
+material = SubResource("StandardMaterial3D_4wgio")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ttdmf")
