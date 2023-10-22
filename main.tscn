@@ -14,7 +14,6 @@ position = Vector2(526, 337)
 texture = ExtResource("2_x2np0")
 script = ExtResource("3_lofek")
 gravity = 50.0
-horizontal_drag = 0.2
 uplift_factor = 0.01
 
 [node name="Thruster" type="Sprite2D" parent="Plane"]
@@ -22,6 +21,11 @@ visible = false
 position = Vector2(-30, 1)
 scale = Vector2(0.34, 0.34)
 texture = ExtResource("4_104lq")
+
+[node name="Label" type="Label" parent="Plane"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "hello"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = -1
